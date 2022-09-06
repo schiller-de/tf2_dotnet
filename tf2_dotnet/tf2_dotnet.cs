@@ -81,20 +81,20 @@ namespace ROS2 {
 
       private Publisher<tf2_msgs.msg.TFMessage> tf_pub_;
 
-      public TransformBroadcaster(ref Node node) {
+      public TransformBroadcaster(Node node) {
         tf_pub_ = node.CreatePublisher<tf2_msgs.msg.TFMessage> ("/tf");
       }
 
-      public void SendTransform(ref geometry_msgs.msg.TransformStamped msgtf) {
-        List<geometry_msgs.msg.TransformStamped> v1 = new List<geometry_msgs.msg.TransformStamped>();
-        v1.Add(msgtf);
-        SendTransform(ref v1);
+      public void SendTransform(geometry_msgs.msg.TransformStamped transform) {
+        List<geometry_msgs.msg.TransformStamped> transforms = new List<geometry_msgs.msg.TransformStamped>();
+        transforms.Add(transform);
+        SendTransform(transforms);
       }
 
-      public void SendTransform(ref List<geometry_msgs.msg.TransformStamped> msgtf) {
+      public void SendTransform(List<geometry_msgs.msg.TransformStamped> transforms) {
         tf2_msgs.msg.TFMessage message = new tf2_msgs.msg.TFMessage();
 
-        foreach (geometry_msgs.msg.TransformStamped value in msgtf)
+        foreach (geometry_msgs.msg.TransformStamped value in transforms)
         {
           message.Transforms.Add(value);
         }
