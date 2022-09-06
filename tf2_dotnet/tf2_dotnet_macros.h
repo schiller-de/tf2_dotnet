@@ -12,30 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCLDOTNET_MACROS_H
-#define RCLDOTNET_MACROS_H
+#ifndef TF2DOTNET_MACROS_H
+#define TF2DOTNET_MACROS_H
 
 #if defined(_MSC_VER)
-    #define RCLDOTNET_EXPORT __declspec(dllexport)
-    #define RCLDOTNET_IMPORT __declspec(dllimport)
+    #define TF2DOTNET_EXPORT __declspec(dllexport)
+    #define TF2DOTNET_IMPORT __declspec(dllimport)
     #if defined(_M_IX86)
-        #define RCLDOTNET_CDECL __cdecl
+        #define TF2DOTNET_CDECL __cdecl
     #else
-        #define RCLDOTNET_CDECL
+        #define TF2DOTNET_CDECL
     #endif
 #elif defined(__GNUC__)
-    #define RCLDOTNET_EXPORT __attribute__((visibility("default")))
-    #define RCLDOTNET_IMPORT
+    #define TF2DOTNET_EXPORT __attribute__((visibility("default")))
+    #define TF2DOTNET_IMPORT
     #if defined(__i386__)
-        #define RCLDOTNET_CDECL __attribute__((__cdecl__))
+        #define TF2DOTNET_CDECL __attribute__((__cdecl__))
     #else
-        #define RCLDOTNET_CDECL
+        #define TF2DOTNET_CDECL
     #endif
 #else
-    #define RCLDOTNET_EXPORT
-    #define RCLDOTNET_IMPORT
-    #define RCLDOTNET_CDECL
+    #define TF2DOTNET_EXPORT
+    #define TF2DOTNET_IMPORT
+    #define TF2DOTNET_CDECL
     #pragma warning Unknown dynamic link import/export semantics.
 #endif
 
-#endif // RCLDOTNET_MACROS_H
+#endif // TF2DOTNET_MACROS_H

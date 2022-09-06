@@ -28,22 +28,22 @@ tf2_lookup_transform(
     const char * frame_from, const char * frame_to,
     const tf2::TimePoint& tp);
 
-RCLDOTNET_EXPORT
-void RCLDOTNET_CDECL native_tf2_init ();
+TF2DOTNET_EXPORT
+void TF2DOTNET_CDECL native_tf2_init ();
 
-RCLDOTNET_EXPORT
-void RCLDOTNET_CDECL native_tf2_add_transform (int32_t sec, uint32_t nanosec,
+TF2DOTNET_EXPORT
+void TF2DOTNET_CDECL native_tf2_add_transform (int32_t sec, uint32_t nanosec,
   const char * frame_id, const char * child_frame_id,
   double trans_x, double trans_y, double trans_z,
   double rot_x, double rot_y, double rot_z, double rot_w, int32_t is_static);
 
-RCLDOTNET_EXPORT
-Tf2DotnetTransformStamped RCLDOTNET_CDECL native_tf2_lookup_transform (
+TF2DOTNET_EXPORT
+Tf2DotnetTransformStamped TF2DOTNET_CDECL native_tf2_lookup_transform (
   const char * frame_from, const char * frame_to,
   int32_t sec, uint32_t nanosec);
 
-RCLDOTNET_EXPORT
-Tf2DotnetTransformStamped RCLDOTNET_CDECL native_tf2_lookup_last_transform (
+TF2DOTNET_EXPORT
+Tf2DotnetTransformStamped TF2DOTNET_CDECL native_tf2_lookup_last_transform (
   const char * frame_from, const char * frame_to);
 }
 #endif // TF2_DOTNET_H
