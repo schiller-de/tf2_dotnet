@@ -35,7 +35,7 @@ RCLDOTNET_EXPORT
 void RCLDOTNET_CDECL native_tf2_add_transform (int32_t sec, uint32_t nanosec,
   const char * frame_id, const char * child_frame_id,
   double trans_x, double trans_y, double trans_z,
-  double rot_x, double rot_y, double rot_z, double rot_w);
+  double rot_x, double rot_y, double rot_z, double rot_w, int32_t is_static);
 
 RCLDOTNET_EXPORT
 Tf2DotnetTransformStamped RCLDOTNET_CDECL native_tf2_lookup_transform (

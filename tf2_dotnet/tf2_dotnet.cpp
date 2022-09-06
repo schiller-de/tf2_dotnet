@@ -18,7 +18,7 @@ void native_tf2_init()
 void native_tf2_add_transform(int32_t sec, uint32_t nanosec,
   const char * frame_id, const char * child_frame_id,
   double trans_x, double trans_y, double trans_z,
-  double rot_x, double rot_y, double rot_z, double rot_w)
+  double rot_x, double rot_y, double rot_z, double rot_w, int32_t is_static)
   {
     geometry_msgs::msg::TransformStamped transform;
 
@@ -34,7 +34,7 @@ void native_tf2_add_transform(int32_t sec, uint32_t nanosec,
     transform.transform.rotation.z = rot_z;
     transform.transform.rotation.w = rot_w;
 
-    tf2_buffer_core->setTransform(transform, "tf2_dotnet", false);
+    tf2_buffer_core->setTransform(transform, "tf2_dotnet", is_static == 1);
   }
 
 Tf2DotnetTransformStamped

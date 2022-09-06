@@ -38,7 +38,7 @@ namespace ROS2 {
         int sec, uint nanosec, [MarshalAs (UnmanagedType.LPStr)] string frame_id,
         [MarshalAs (UnmanagedType.LPStr)] string child_frame_id,
         double trans_x, double trans_y, double trans_z,
-        double rot_x, double rot_y, double rot_z, double rot_w);
+        double rot_x, double rot_y, double rot_z, double rot_w, int is_static);
       internal static NativeTF2AddTransformType native_tf2_add_transform = null;
 
       [UnmanagedFunctionPointer (CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -126,6 +126,7 @@ namespace ROS2 {
     public class TransformListener {
 
       private Subscription<tf2_msgs.msg.TFMessage> tf_sub_;
+      private Subscription<tf2_msgs.msg.TFMessage> tf_static_sub_;
 
       public TransformListener(ref Node node) {
 
@@ -147,7 +148,31 @@ namespace ROS2 {
                 transform.Transform.Rotation.X,
                 transform.Transform.Rotation.Y,
                 transform.Transform.Rotation.Z,
-                transform.Transform.Rotation.W
+                transform.Transform.Rotation.W,
+                is_static: 0
+              );
+            }
+          }
+        );
+
+        tf_static_sub_ = node.CreateSubscription<tf2_msgs.msg.TFMessage> (
+          "/tf_static",
+          msg => {
+
+            foreach (geometry_msgs.msg.TransformStamped transform in msg.Transforms) {
+              TF2dotnetDelegates.native_tf2_add_transform (
+                transform.Header.Stamp.Sec,
+                transform.Header.Stamp.Nanosec,
+                transform.Header.FrameId,
+                transform.ChildFrameId,
+                transform.Transform.Translation.X,
+                transform.Transform.Translation.Y,
+                transform.Transform.Translation.Z,
+                transform.Transform.Rotation.X,
+                transform.Transform.Rotation.Y,
+                transform.Transform.Rotation.Z,
+                transform.Transform.Rotation.W,
+                is_static: 1
               );
             }
           }
