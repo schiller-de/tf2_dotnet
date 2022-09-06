@@ -85,9 +85,9 @@ namespace ROS2 {
 
     public class TransformBroadcaster {
 
-      private IPublisher<tf2_msgs.msg.TFMessage> tf_pub_;
+      private Publisher<tf2_msgs.msg.TFMessage> tf_pub_;
 
-      public TransformBroadcaster(ref INode node) {
+      public TransformBroadcaster(ref Node node) {
         tf_pub_ = node.CreatePublisher<tf2_msgs.msg.TFMessage> ("/tf");
       }
 
@@ -125,9 +125,9 @@ namespace ROS2 {
 
     public class TransformListener {
 
-      private ISubscription<tf2_msgs.msg.TFMessage> tf_sub_;
+      private Subscription<tf2_msgs.msg.TFMessage> tf_sub_;
 
-      public TransformListener(ref INode node) {
+      public TransformListener(ref Node node) {
 
         TF2dotnetDelegates.native_tf2_init ();
 
@@ -139,8 +139,8 @@ namespace ROS2 {
               TF2dotnetDelegates.native_tf2_add_transform (
                 transform.Header.Stamp.Sec,
                 transform.Header.Stamp.Nanosec,
-                transform.Header.Frame_id,
-                transform.Child_frame_id,
+                transform.Header.FrameId,
+                transform.ChildFrameId,
                 transform.Transform.Translation.X,
                 transform.Transform.Translation.Y,
                 transform.Transform.Translation.Z,
