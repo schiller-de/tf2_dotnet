@@ -35,6 +35,8 @@ if(NOT WIN32)
   endif()
 endif()
 
+set(CSHARP_TARGET_FRAMEWORK "netstandard2.0")
+
 set(CS_SOURCES
   tf2_dotnet.cs
 )
