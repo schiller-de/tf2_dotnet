@@ -39,14 +39,14 @@ void native_tf2_add_transform(int32_t sec, uint32_t nanosec,
 
 Tf2DotnetTransformStamped
 tf2_lookup_transform(
-    const char * frame_from, const char * frame_to,
-    const tf2::TimePoint& tp)
+    const char * target_frame, const char * source_frame,
+    const tf2::TimePoint& time)
 {
   Tf2DotnetTransformStamped ret;
 
   try {
     geometry_msgs::msg::TransformStamped transform =
-      tf2_buffer_core->lookupTransform(std::string(frame_from), std::string(frame_to), tp);
+      tf2_buffer_core->lookupTransform(std::string(target_frame), std::string(source_frame), time);
 
     ret.sec = transform.header.stamp.sec;
     ret.nanosec = transform.header.stamp.nanosec;
@@ -77,18 +77,18 @@ tf2_lookup_transform(
 
 Tf2DotnetTransformStamped
 native_tf2_lookup_transform(
-    const char * frame_from, const char * frame_to,
+    const char * target_frame, const char * source_frame,
     int32_t sec, uint32_t nanosec)
 {
-  return tf2_lookup_transform(frame_from, frame_to,
+  return tf2_lookup_transform(target_frame, source_frame,
     tf2::TimePoint(std::chrono::seconds(sec) + std::chrono::nanoseconds(nanosec)));
 }
 
 Tf2DotnetTransformStamped
 native_tf2_lookup_last_transform(
-    const char * frame_from, const char * frame_to)
+    const char * target_frame, const char * source_frame)
 {
-  return tf2_lookup_transform(frame_from, frame_to, tf2::TimePointZero);
+  return tf2_lookup_transform(target_frame, source_frame, tf2::TimePointZero);
 }
 
 

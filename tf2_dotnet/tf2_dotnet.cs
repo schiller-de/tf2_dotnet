@@ -20,7 +20,7 @@
  using System.Runtime.InteropServices;
  using System.Text;
  using System.Threading.Tasks;
-
+using builtin_interfaces.msg;
 using ROS2;
 using ROS2.Utils;
 
@@ -43,15 +43,15 @@ namespace ROS2 {
 
       [UnmanagedFunctionPointer (CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
       internal delegate Transform NativeTF2LookUpTransformType (
-        [MarshalAs (UnmanagedType.LPStr)] string frame_id,
-        [MarshalAs (UnmanagedType.LPStr)] string child_frame_id,
+        [MarshalAs (UnmanagedType.LPStr)] string targetFrame,
+        [MarshalAs (UnmanagedType.LPStr)] string sourceFrame,
         int sec, uint nanosec);
       internal static NativeTF2LookUpTransformType native_tf2_lookup_transform = null;
 
       [UnmanagedFunctionPointer (CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
       internal delegate Transform NativeTF2LookUpLastTransformType (
-        [MarshalAs (UnmanagedType.LPStr)] string frame_id,
-        [MarshalAs (UnmanagedType.LPStr)] string child_frame_id);
+        [MarshalAs (UnmanagedType.LPStr)] string targetFrame,
+        [MarshalAs (UnmanagedType.LPStr)] string sourceFrame);
       internal static NativeTF2LookUpLastTransformType native_tf2_lookup_last_transform = null;
 
       static TF2dotnetDelegates () {
@@ -125,7 +125,7 @@ namespace ROS2 {
       private static readonly object _lock = new object();
       private static bool _initialized = false;
 
-      public TransformListener(ref Node node) {
+      public TransformListener(Node node) {
 
         lock(_lock)
         {
@@ -188,19 +188,19 @@ namespace ROS2 {
 
       }
 
-      public Transform LookUpTransform(
-        System.String frame_from, System.String frame_to,
-        Tuple<int, uint> time) {
+      public Transform LookupTransform(
+        string targetFrame, string sourceFrame,
+        Time time) {
 
-        Transform transform = TF2dotnetDelegates.native_tf2_lookup_transform (frame_from, frame_to,
-          time.Item1, time.Item2);
+        Transform transform = TF2dotnetDelegates.native_tf2_lookup_transform (targetFrame, sourceFrame,
+          time.Sec, time.Nanosec);
 
         return transform;
       }
-      public Transform LookUpLastTransform(
-        System.String frame_from, System.String frame_to) {
+      public Transform LookupTransform(
+        string targetFrame, string sourceFrame) {
 
-        Transform transform = TF2dotnetDelegates.native_tf2_lookup_last_transform (frame_from, frame_to);
+        Transform transform = TF2dotnetDelegates.native_tf2_lookup_last_transform (targetFrame, sourceFrame);
 
         return transform;
       }
