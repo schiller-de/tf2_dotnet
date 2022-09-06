@@ -12,9 +12,7 @@
 extern "C" {
 void native_tf2_init()
 {
-  std::cout<<"Initializing TF2 C#"<<std::endl;
   tf2_buffer_core = new tf2::BufferCore();
-  std::cout<<"Done"<<std::endl;
 }
 
 void native_tf2_add_transform(int32_t sec, uint32_t nanosec,
@@ -36,7 +34,6 @@ void native_tf2_add_transform(int32_t sec, uint32_t nanosec,
     transform.transform.rotation.z = rot_z;
     transform.transform.rotation.w = rot_w;
 
-    fprintf(stderr, "adding a transform to buffer\n");
     tf2_buffer_core->setTransform(transform, "tf2_dotnet", false);
   }
 
