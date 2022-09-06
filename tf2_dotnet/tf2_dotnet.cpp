@@ -7,8 +7,6 @@
 #include <rcl/rcl.h>
 #include <rmw/rmw.h>
 
-#include "rosidl_generator_c/message_type_support_struct.h"
-
 #include "tf2_dotnet.h"
 
 extern "C" {
