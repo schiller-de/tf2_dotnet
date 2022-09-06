@@ -77,12 +77,6 @@ namespace ROS2 {
       }
     }
 
-    public class TF2dotnet {
-      public static void Init () {
-        TF2dotnetDelegates.native_tf2_init ();
-      }
-    }
-
     public class TransformBroadcaster {
 
       private Publisher<tf2_msgs.msg.TFMessage> tf_pub_;
@@ -128,9 +122,23 @@ namespace ROS2 {
       private Subscription<tf2_msgs.msg.TFMessage> tf_sub_;
       private Subscription<tf2_msgs.msg.TFMessage> tf_static_sub_;
 
+      private static readonly object _lock = new object();
+      private static bool _initialized = false;
+
       public TransformListener(ref Node node) {
 
-        TF2dotnetDelegates.native_tf2_init ();
+        lock(_lock)
+        {
+          if (!_initialized)
+          {
+            TF2dotnetDelegates.native_tf2_init();
+            _initialized = true;
+          }
+          else
+          {
+            throw new NotSupportedException("Only one TransformListener per process is supported right now.");
+          }
+        }
 
         tf_sub_ = node.CreateSubscription<tf2_msgs.msg.TFMessage> (
           "/tf",
