@@ -46,13 +46,17 @@ namespace ROS2 {
       internal delegate Transform NativeTF2LookUpTransformType (
         [MarshalAs (UnmanagedType.LPStr)] string targetFrame,
         [MarshalAs (UnmanagedType.LPStr)] string sourceFrame,
-        int sec, uint nanosec);
+        int sec, uint nanosec,
+        out TF2ExceptionType exceptionType,
+        byte[] exceptionMessageBuffer);
       internal static NativeTF2LookUpTransformType native_tf2_lookup_transform = null;
 
       [UnmanagedFunctionPointer (CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
       internal delegate Transform NativeTF2LookUpLastTransformType (
         [MarshalAs (UnmanagedType.LPStr)] string targetFrame,
-        [MarshalAs (UnmanagedType.LPStr)] string sourceFrame);
+        [MarshalAs (UnmanagedType.LPStr)] string sourceFrame,
+        out TF2ExceptionType exceptionType,
+        byte[] exceptionMessageBuffer);
       internal static NativeTF2LookUpLastTransformType native_tf2_lookup_last_transform = null;
 
       static TF2dotnetDelegates () {
@@ -115,7 +119,6 @@ namespace ROS2 {
       public double Rotation_y;
       public double Rotation_z;
       public double Rotation_w;
-      public int Valid;
 
       internal TransformStamped ToTransformStamped(string targetFrame, string sourceFrame)
       {
@@ -212,25 +215,36 @@ namespace ROS2 {
         string targetFrame, string sourceFrame,
         Time time) {
 
-        Transform transform = TF2dotnetDelegates.native_tf2_lookup_transform (targetFrame, sourceFrame,
-          time.Sec, time.Nanosec);
+        TF2ExceptionHelper.ResetMessage();
 
-        TransformStamped transformStamped = transform.Valid == 1
-          ? transform.ToTransformStamped(targetFrame, sourceFrame)
-          : null;
+        Transform transform = TF2dotnetDelegates.native_tf2_lookup_transform(
+          targetFrame,
+          sourceFrame,
+          time.Sec,
+          time.Nanosec,
+          out TF2ExceptionType exceptionType,
+          TF2ExceptionHelper.MessageBuffer);
 
+        TF2ExceptionHelper.ThrowIfHasException(exceptionType);
+
+        TransformStamped transformStamped = transform.ToTransformStamped(targetFrame, sourceFrame);
         return transformStamped;
       }
 
       public TransformStamped LookupTransform(
         string targetFrame, string sourceFrame) {
 
-        Transform transform = TF2dotnetDelegates.native_tf2_lookup_last_transform (targetFrame, sourceFrame);
+        TF2ExceptionHelper.ResetMessage();
 
-        TransformStamped transformStamped = transform.Valid == 1
-          ? transform.ToTransformStamped(targetFrame, sourceFrame)
-          : null;
+        Transform transform = TF2dotnetDelegates.native_tf2_lookup_last_transform(
+          targetFrame,
+          sourceFrame,
+          out TF2ExceptionType exceptionType,
+          TF2ExceptionHelper.MessageBuffer);
 
+        TF2ExceptionHelper.ThrowIfHasException(exceptionType);
+
+        TransformStamped transformStamped = transform.ToTransformStamped(targetFrame, sourceFrame);
         return transformStamped;
       }
 
