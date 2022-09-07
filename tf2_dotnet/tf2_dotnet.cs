@@ -31,7 +31,9 @@ namespace ROS2 {
       internal static readonly DllLoadUtils dllLoadUtils;
 
       [UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-      internal delegate void NativeTF2InitType ();
+      internal delegate void NativeTF2InitType (
+        out TF2ExceptionType exceptionType,
+        byte[] exceptionMessageBuffer);
       internal static NativeTF2InitType native_tf2_init = null;
 
       [UnmanagedFunctionPointer (CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -39,7 +41,9 @@ namespace ROS2 {
         int sec, uint nanosec, [MarshalAs (UnmanagedType.LPStr)] string frame_id,
         [MarshalAs (UnmanagedType.LPStr)] string child_frame_id,
         double trans_x, double trans_y, double trans_z,
-        double rot_x, double rot_y, double rot_z, double rot_w, int is_static);
+        double rot_x, double rot_y, double rot_z, double rot_w, int is_static,
+        out TF2ExceptionType exceptionType,
+        byte[] exceptionMessageBuffer);
       internal static NativeTF2AddTransformType native_tf2_add_transform = null;
 
       [UnmanagedFunctionPointer (CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -154,7 +158,10 @@ namespace ROS2 {
         {
           if (!_initialized)
           {
-            TF2dotnetDelegates.native_tf2_init();
+            TF2ExceptionHelper.ResetMessage();
+            TF2dotnetDelegates.native_tf2_init(out TF2ExceptionType exceptionType, TF2ExceptionHelper.MessageBuffer);
+            TF2ExceptionHelper.ThrowIfHasException(exceptionType);
+
             _initialized = true;
           }
           else
@@ -168,6 +175,9 @@ namespace ROS2 {
           msg => {
 
             foreach (geometry_msgs.msg.TransformStamped transform in msg.Transforms) {
+
+              TF2ExceptionHelper.ResetMessage();
+
               TF2dotnetDelegates.native_tf2_add_transform (
                 transform.Header.Stamp.Sec,
                 transform.Header.Stamp.Nanosec,
@@ -180,8 +190,12 @@ namespace ROS2 {
                 transform.Transform.Rotation.Y,
                 transform.Transform.Rotation.Z,
                 transform.Transform.Rotation.W,
-                is_static: 0
+                is_static: 0,
+                out TF2ExceptionType exceptionType,
+                TF2ExceptionHelper.MessageBuffer
               );
+
+              TF2ExceptionHelper.ThrowIfHasException(exceptionType);
             }
           }
         );
@@ -191,6 +205,9 @@ namespace ROS2 {
           msg => {
 
             foreach (geometry_msgs.msg.TransformStamped transform in msg.Transforms) {
+
+              TF2ExceptionHelper.ResetMessage();
+
               TF2dotnetDelegates.native_tf2_add_transform (
                 transform.Header.Stamp.Sec,
                 transform.Header.Stamp.Nanosec,
@@ -203,8 +220,13 @@ namespace ROS2 {
                 transform.Transform.Rotation.Y,
                 transform.Transform.Rotation.Z,
                 transform.Transform.Rotation.W,
-                is_static: 1
+                is_static: 1,
+                out TF2ExceptionType exceptionType,
+                TF2ExceptionHelper.MessageBuffer
               );
+
+              TF2ExceptionHelper.ThrowIfHasException(exceptionType);
+
             }
           }
         );

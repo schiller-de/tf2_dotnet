@@ -49,13 +49,15 @@ tf2_lookup_transform(
     const tf2::TimePoint& tp);
 
 TF2DOTNET_EXPORT
-void TF2DOTNET_CDECL native_tf2_init ();
+void TF2DOTNET_CDECL native_tf2_init (
+  Tf2DotnetExceptionType * exception_type, char * exception_message_buffer);
 
 TF2DOTNET_EXPORT
 void TF2DOTNET_CDECL native_tf2_add_transform (int32_t sec, uint32_t nanosec,
   const char * frame_id, const char * child_frame_id,
   double trans_x, double trans_y, double trans_z,
-  double rot_x, double rot_y, double rot_z, double rot_w, int32_t is_static);
+  double rot_x, double rot_y, double rot_z, double rot_w, int32_t is_static,
+  Tf2DotnetExceptionType * exception_type, char * exception_message_buffer);
 
 TF2DOTNET_EXPORT
 Tf2DotnetTransformStamped TF2DOTNET_CDECL native_tf2_lookup_transform (
