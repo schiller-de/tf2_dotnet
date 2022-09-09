@@ -62,6 +62,38 @@ void tf2_convert_exception(Tf2DotnetExceptionType * exception_type, char * excep
   }
 }
 
+tf2::BufferCore *
+tf2_dotnet_native_buffer_core_create(
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer)
+{
+  try
+  {
+    return new tf2::BufferCore();
+  }
+  catch (...)
+  {
+    tf2_convert_exception(exception_type, exception_message_buffer);
+    return nullptr;
+  }
+}
+
+void
+tf2_dotnet_native_buffer_core_destroy(
+  tf2::BufferCore * buffer_core,
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer)
+{
+  try
+  {
+    delete buffer_core;
+  }
+  catch (...)
+  {
+    tf2_convert_exception(exception_type, exception_message_buffer);
+  }
+}
+
 void native_tf2_init(Tf2DotnetExceptionType * exception_type, char * exception_message_buffer)
 {
   try

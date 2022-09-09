@@ -43,6 +43,21 @@ tf2_convert_exception(
   Tf2DotnetExceptionType * exception_type,
   char * exception_message_buffer);
 
+TF2DOTNET_EXPORT
+tf2::BufferCore *
+TF2DOTNET_CDECL
+tf2_dotnet_native_buffer_core_create(
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer);
+
+TF2DOTNET_EXPORT
+void
+TF2DOTNET_CDECL
+tf2_dotnet_native_buffer_core_destroy(
+  tf2::BufferCore * buffer_core,
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer);
+
 Tf2DotnetTransformStamped
 tf2_lookup_transform(
     const char * target_frame, const char * source_frame,

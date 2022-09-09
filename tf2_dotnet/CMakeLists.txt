@@ -39,8 +39,11 @@ set(CSHARP_TARGET_FRAMEWORK "netstandard2.0")
 
 set(CS_SOURCES
   Exceptions.cs
+  Interop.cs
+  SafeBufferCoreHandle.cs
   tf2_dotnet.cs
   Tf2ExceptionHelper.cs
+  TransformBuffer.cs
 )
 
 find_package(rcldotnet_common REQUIRED)
