@@ -25,14 +25,14 @@ using geometry_msgs.msg;
 using ROS2;
 using ROS2.Utils;
 
-namespace ROS2 {
-  namespace TF2 {
-    internal class TF2dotnetDelegates {
+namespace Ros2 {
+  namespace Tf2DotNet {
+    internal class Tf2DotNetDelegates {
       internal static readonly DllLoadUtils dllLoadUtils;
 
       [UnmanagedFunctionPointer (CallingConvention.Cdecl)]
       internal delegate void NativeTF2InitType (
-        out TF2ExceptionType exceptionType,
+        out Tf2ExceptionType exceptionType,
         byte[] exceptionMessageBuffer);
       internal static NativeTF2InitType native_tf2_init = null;
 
@@ -42,7 +42,7 @@ namespace ROS2 {
         [MarshalAs (UnmanagedType.LPStr)] string child_frame_id,
         double trans_x, double trans_y, double trans_z,
         double rot_x, double rot_y, double rot_z, double rot_w, int is_static,
-        out TF2ExceptionType exceptionType,
+        out Tf2ExceptionType exceptionType,
         byte[] exceptionMessageBuffer);
       internal static NativeTF2AddTransformType native_tf2_add_transform = null;
 
@@ -51,7 +51,7 @@ namespace ROS2 {
         [MarshalAs (UnmanagedType.LPStr)] string targetFrame,
         [MarshalAs (UnmanagedType.LPStr)] string sourceFrame,
         int sec, uint nanosec,
-        out TF2ExceptionType exceptionType,
+        out Tf2ExceptionType exceptionType,
         byte[] exceptionMessageBuffer);
       internal static NativeTF2LookUpTransformType native_tf2_lookup_transform = null;
 
@@ -59,29 +59,29 @@ namespace ROS2 {
       internal delegate Transform NativeTF2LookUpLastTransformType (
         [MarshalAs (UnmanagedType.LPStr)] string targetFrame,
         [MarshalAs (UnmanagedType.LPStr)] string sourceFrame,
-        out TF2ExceptionType exceptionType,
+        out Tf2ExceptionType exceptionType,
         byte[] exceptionMessageBuffer);
       internal static NativeTF2LookUpLastTransformType native_tf2_lookup_last_transform = null;
 
-      static TF2dotnetDelegates () {
+      static Tf2DotNetDelegates () {
         dllLoadUtils = DllLoadUtilsFactory.GetDllLoadUtils ();
         string library_name = "tf2_dotnet";
         IntPtr pDll = dllLoadUtils.LoadLibrary (library_name);
 
         IntPtr native_tf2_init_ptr = dllLoadUtils.GetProcAddress (pDll, "native_tf2_init");
-        TF2dotnetDelegates.native_tf2_init = (NativeTF2InitType) Marshal.GetDelegateForFunctionPointer (
+        Tf2DotNetDelegates.native_tf2_init = (NativeTF2InitType) Marshal.GetDelegateForFunctionPointer (
           native_tf2_init_ptr, typeof (NativeTF2InitType));
 
         IntPtr native_tf2_add_transform_ptr = dllLoadUtils.GetProcAddress (pDll, "native_tf2_add_transform");
-        TF2dotnetDelegates.native_tf2_add_transform = (NativeTF2AddTransformType) Marshal.GetDelegateForFunctionPointer (
+        Tf2DotNetDelegates.native_tf2_add_transform = (NativeTF2AddTransformType) Marshal.GetDelegateForFunctionPointer (
           native_tf2_add_transform_ptr, typeof (NativeTF2AddTransformType));
 
         IntPtr native_tf2_lookup_transform_ptr = dllLoadUtils.GetProcAddress (pDll, "native_tf2_lookup_transform");
-        TF2dotnetDelegates.native_tf2_lookup_transform = (NativeTF2LookUpTransformType) Marshal.GetDelegateForFunctionPointer (
+        Tf2DotNetDelegates.native_tf2_lookup_transform = (NativeTF2LookUpTransformType) Marshal.GetDelegateForFunctionPointer (
           native_tf2_lookup_transform_ptr, typeof (NativeTF2LookUpTransformType));
 
         IntPtr native_tf2_lookup_last_transform_ptr = dllLoadUtils.GetProcAddress (pDll, "native_tf2_lookup_last_transform");
-        TF2dotnetDelegates.native_tf2_lookup_last_transform = (NativeTF2LookUpLastTransformType) Marshal.GetDelegateForFunctionPointer (
+        Tf2DotNetDelegates.native_tf2_lookup_last_transform = (NativeTF2LookUpLastTransformType) Marshal.GetDelegateForFunctionPointer (
           native_tf2_lookup_last_transform_ptr, typeof (NativeTF2LookUpLastTransformType));
       }
     }
@@ -158,9 +158,9 @@ namespace ROS2 {
         {
           if (!_initialized)
           {
-            TF2ExceptionHelper.ResetMessage();
-            TF2dotnetDelegates.native_tf2_init(out TF2ExceptionType exceptionType, TF2ExceptionHelper.MessageBuffer);
-            TF2ExceptionHelper.ThrowIfHasException(exceptionType);
+            Tf2ExceptionHelper.ResetMessage();
+            Tf2DotNetDelegates.native_tf2_init(out Tf2ExceptionType exceptionType, Tf2ExceptionHelper.MessageBuffer);
+            Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
 
             _initialized = true;
           }
@@ -176,9 +176,9 @@ namespace ROS2 {
 
             foreach (geometry_msgs.msg.TransformStamped transform in msg.Transforms) {
 
-              TF2ExceptionHelper.ResetMessage();
+              Tf2ExceptionHelper.ResetMessage();
 
-              TF2dotnetDelegates.native_tf2_add_transform (
+              Tf2DotNetDelegates.native_tf2_add_transform (
                 transform.Header.Stamp.Sec,
                 transform.Header.Stamp.Nanosec,
                 transform.Header.FrameId,
@@ -191,11 +191,11 @@ namespace ROS2 {
                 transform.Transform.Rotation.Z,
                 transform.Transform.Rotation.W,
                 is_static: 0,
-                out TF2ExceptionType exceptionType,
-                TF2ExceptionHelper.MessageBuffer
+                out Tf2ExceptionType exceptionType,
+                Tf2ExceptionHelper.MessageBuffer
               );
 
-              TF2ExceptionHelper.ThrowIfHasException(exceptionType);
+              Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
             }
           }
         );
@@ -206,9 +206,9 @@ namespace ROS2 {
 
             foreach (geometry_msgs.msg.TransformStamped transform in msg.Transforms) {
 
-              TF2ExceptionHelper.ResetMessage();
+              Tf2ExceptionHelper.ResetMessage();
 
-              TF2dotnetDelegates.native_tf2_add_transform (
+              Tf2DotNetDelegates.native_tf2_add_transform (
                 transform.Header.Stamp.Sec,
                 transform.Header.Stamp.Nanosec,
                 transform.Header.FrameId,
@@ -221,11 +221,11 @@ namespace ROS2 {
                 transform.Transform.Rotation.Z,
                 transform.Transform.Rotation.W,
                 is_static: 1,
-                out TF2ExceptionType exceptionType,
-                TF2ExceptionHelper.MessageBuffer
+                out Tf2ExceptionType exceptionType,
+                Tf2ExceptionHelper.MessageBuffer
               );
 
-              TF2ExceptionHelper.ThrowIfHasException(exceptionType);
+              Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
 
             }
           }
@@ -237,17 +237,17 @@ namespace ROS2 {
         string targetFrame, string sourceFrame,
         Time time) {
 
-        TF2ExceptionHelper.ResetMessage();
+        Tf2ExceptionHelper.ResetMessage();
 
-        Transform transform = TF2dotnetDelegates.native_tf2_lookup_transform(
+        Transform transform = Tf2DotNetDelegates.native_tf2_lookup_transform(
           targetFrame,
           sourceFrame,
           time.Sec,
           time.Nanosec,
-          out TF2ExceptionType exceptionType,
-          TF2ExceptionHelper.MessageBuffer);
+          out Tf2ExceptionType exceptionType,
+          Tf2ExceptionHelper.MessageBuffer);
 
-        TF2ExceptionHelper.ThrowIfHasException(exceptionType);
+        Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
 
         TransformStamped transformStamped = transform.ToTransformStamped(targetFrame, sourceFrame);
         return transformStamped;
@@ -256,15 +256,15 @@ namespace ROS2 {
       public TransformStamped LookupTransform(
         string targetFrame, string sourceFrame) {
 
-        TF2ExceptionHelper.ResetMessage();
+        Tf2ExceptionHelper.ResetMessage();
 
-        Transform transform = TF2dotnetDelegates.native_tf2_lookup_last_transform(
+        Transform transform = Tf2DotNetDelegates.native_tf2_lookup_last_transform(
           targetFrame,
           sourceFrame,
-          out TF2ExceptionType exceptionType,
-          TF2ExceptionHelper.MessageBuffer);
+          out Tf2ExceptionType exceptionType,
+          Tf2ExceptionHelper.MessageBuffer);
 
-        TF2ExceptionHelper.ThrowIfHasException(exceptionType);
+        Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
 
         TransformStamped transformStamped = transform.ToTransformStamped(targetFrame, sourceFrame);
         return transformStamped;

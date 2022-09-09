@@ -40,7 +40,7 @@ set(CSHARP_TARGET_FRAMEWORK "netstandard2.0")
 set(CS_SOURCES
   Exceptions.cs
   tf2_dotnet.cs
-  TF2ExceptionHelper.cs
+  Tf2ExceptionHelper.cs
 )
 
 find_package(rcldotnet_common REQUIRED)

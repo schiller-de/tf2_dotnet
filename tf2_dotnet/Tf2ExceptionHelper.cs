@@ -15,10 +15,10 @@
 
 using System;
 
-namespace ROS2.TF2
+namespace Ros2.Tf2DotNet
 {
     // Mirror of Tf2DotnetExceptionType in C++, keep in Sync!
-    internal enum TF2ExceptionType : int
+    internal enum Tf2ExceptionType : int
     {
         NoException = 0,
         LookupException = 1,
@@ -31,7 +31,7 @@ namespace ROS2.TF2
         UnknownException = 1001, // all other types
     }
 
-    internal static class TF2ExceptionHelper
+    internal static class Tf2ExceptionHelper
     {
         // Mirror of TF2_DOTNET_EXCEPTION_MESSAGE_BUFFER_LENGTH in C++, keep in Sync!
         public const int MessageBufferLength = 256;
@@ -51,47 +51,47 @@ namespace ROS2.TF2
             }
         }
 
-        public static void ThrowIfHasException(TF2ExceptionType exceptionType)
+        public static void ThrowIfHasException(Tf2ExceptionType exceptionType)
         {
-            if (exceptionType != TF2ExceptionType.NoException)
+            if (exceptionType != Tf2ExceptionType.NoException)
             {
                 throw CreateFromExceptionType(exceptionType);
             }
         }
 
-        public static Exception CreateFromExceptionType(TF2ExceptionType exceptionType)
+        public static Exception CreateFromExceptionType(Tf2ExceptionType exceptionType)
         {
             try
             {
                  switch (exceptionType)
                 {
-                    case TF2ExceptionType.LookupException:
+                    case Tf2ExceptionType.LookupException:
                         return new LookupException(GetMessage());
 
-                    case TF2ExceptionType.ConnectivityException:
+                    case Tf2ExceptionType.ConnectivityException:
                         return new ConnectivityException(GetMessage());
 
-                    case TF2ExceptionType.ExtrapolationException:
+                    case Tf2ExceptionType.ExtrapolationException:
                         return new ExtrapolationException(GetMessage());
 
-                    case TF2ExceptionType.InvalidArgumentException:
+                    case Tf2ExceptionType.InvalidArgumentException:
                         // Use already defined System.ArgumentException.
                         return new ArgumentException(GetMessage());
 
-                    case TF2ExceptionType.TimeoutException:
+                    case Tf2ExceptionType.TimeoutException:
                         // Use already defined System.TimeoutException.
                         return new TimeoutException(GetMessage());
 
-                    case TF2ExceptionType.TransformException:
+                    case Tf2ExceptionType.TransformException:
                         return new TransformException(GetMessage());
 
-                    case TF2ExceptionType.Exception:
+                    case Tf2ExceptionType.Exception:
                         return new Exception(GetMessage());
 
-                    case TF2ExceptionType.UnknownException:
+                    case Tf2ExceptionType.UnknownException:
                         return new Exception("Unknown C++ exception was thrown, no message available.");
                     
-                    case TF2ExceptionType.NoException:
+                    case Tf2ExceptionType.NoException:
                     default:
                         throw new InvalidOperationException("No valid exception info set.");
                 }
