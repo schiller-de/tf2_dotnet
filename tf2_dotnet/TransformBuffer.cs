@@ -14,6 +14,7 @@
  */
 
 using System;
+using geometry_msgs.msg;
 
 namespace Ros2.Tf2DotNet
 {
@@ -37,6 +38,42 @@ namespace Ros2.Tf2DotNet
         {
             _handle.Dispose();
             _disposed = true;
+        }
+
+        /// <summary>
+        /// Add transform information to the tf data structure.
+        /// </summary>
+        /// <param name="transform">The transform to store.</param>
+        /// <param name="authority">The source of the information for this transform.</param>
+        /// <param name="isStatic">Record this transform as a static transform. It will be good across all time. (This cannot be changed after the first call.)</param>
+        /// <returns>True unless an error occurred.</returns>
+        public bool SetTransform(TransformStamped transform, string authority, bool isStatic = false)
+        {
+            ThrowIfDisposed();
+
+            Tf2ExceptionHelper.ResetMessage();
+
+            int result = Interop.tf2_dotnet_native_buffer_core_set_transform(
+                _handle,
+                transform.Header.Stamp.Sec,
+                transform.Header.Stamp.Nanosec,
+                transform.Header.FrameId,
+                transform.ChildFrameId,
+                transform.Transform.Translation.X,
+                transform.Transform.Translation.Y,
+                transform.Transform.Translation.Z,
+                transform.Transform.Rotation.X,
+                transform.Transform.Rotation.Y,
+                transform.Transform.Rotation.Z,
+                transform.Transform.Rotation.W,
+                authority,
+                isStatic ? 1 : 0,
+                out Tf2ExceptionType exceptionType,
+                Tf2ExceptionHelper.MessageBuffer);
+
+            Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
+            
+            return result == 1;
         }
 
         private void ThrowIfDisposed()

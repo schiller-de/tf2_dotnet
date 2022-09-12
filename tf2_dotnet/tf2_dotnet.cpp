@@ -106,6 +106,51 @@ void native_tf2_init(Tf2DotnetExceptionType * exception_type, char * exception_m
   }
 }
 
+int32_t
+tf2_dotnet_native_buffer_core_set_transform(
+  tf2::BufferCore * buffer_core,
+  int32_t sec,
+  uint32_t nanosec,
+  const char * frame_id,
+  const char * child_frame_id,
+  double translation_x,
+  double translation_y,
+  double translation_z,
+  double rotation_x,
+  double rotation_y,
+  double rotation_z,
+  double rotation_w,
+  const char * authority,
+  int32_t is_static,
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer)
+{
+  try
+  {
+    geometry_msgs::msg::TransformStamped transform;
+
+    transform.header.stamp.sec = sec;
+    transform.header.stamp.nanosec = nanosec;
+    transform.header.frame_id = std::string(frame_id);
+    transform.child_frame_id = std::string(child_frame_id);
+    transform.transform.translation.x = translation_x;
+    transform.transform.translation.y = translation_y;
+    transform.transform.translation.z = translation_z;
+    transform.transform.rotation.x = rotation_x;
+    transform.transform.rotation.y = rotation_y;
+    transform.transform.rotation.z = rotation_z;
+    transform.transform.rotation.w = rotation_w;
+
+    bool result = buffer_core->setTransform(transform, std::string(authority), is_static == 1);
+    return result ? 1 : 0;
+  }
+  catch (...)
+  {
+    tf2_convert_exception(exception_type, exception_message_buffer);
+    return 0;
+  }
+}
+
 void native_tf2_add_transform(int32_t sec, uint32_t nanosec,
   const char * frame_id, const char * child_frame_id,
   double trans_x, double trans_y, double trans_z,

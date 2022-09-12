@@ -31,6 +31,28 @@ namespace Ros2.Tf2DotNet
         internal delegate void Tf2DotNetNativeBufferCoreDestroyType(IntPtr bufferCore, out Tf2ExceptionType exceptionType, byte[] exceptionMessageBuffer);
         internal static Tf2DotNetNativeBufferCoreDestroyType tf2_dotnet_native_buffer_core_destroy = null;
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        internal delegate int Tf2DotNetNativeBufferCoreSetTransformType(
+            SafeBufferCoreHandle bufferCore,
+            int sec,
+            uint nanosec,
+            [MarshalAs(UnmanagedType.LPStr)] string frameId,
+            [MarshalAs(UnmanagedType.LPStr)] string childFrameId,
+            double translationX,
+            double translationY,
+            double translationZ,
+            double rotationX,
+            double rotationY,
+            double rotationZ,
+            double rotationW,
+            [MarshalAs(UnmanagedType.LPStr)]
+            string authority,
+            int isStatic,
+            out Tf2ExceptionType exceptionType,
+            byte[] exceptionMessageBuffer);
+
+        internal static Tf2DotNetNativeBufferCoreSetTransformType tf2_dotnet_native_buffer_core_set_transform = null;
+
         static Interop()
         {
             _dllLoadUtils = DllLoadUtilsFactory.GetDllLoadUtils();
@@ -41,6 +63,9 @@ namespace Ros2.Tf2DotNet
 
             IntPtr tf2_dotnet_native_buffer_core_destroy_ptr = _dllLoadUtils.GetProcAddress(nativeLibrary, "tf2_dotnet_native_buffer_core_destroy");
             tf2_dotnet_native_buffer_core_destroy = (Tf2DotNetNativeBufferCoreDestroyType)Marshal.GetDelegateForFunctionPointer(tf2_dotnet_native_buffer_core_destroy_ptr, typeof(Tf2DotNetNativeBufferCoreDestroyType));
+
+            IntPtr tf2_dotnet_native_buffer_core_set_transform_ptr = _dllLoadUtils.GetProcAddress(nativeLibrary, "tf2_dotnet_native_buffer_core_set_transform");
+            tf2_dotnet_native_buffer_core_set_transform = (Tf2DotNetNativeBufferCoreSetTransformType)Marshal.GetDelegateForFunctionPointer(tf2_dotnet_native_buffer_core_set_transform_ptr, typeof(Tf2DotNetNativeBufferCoreSetTransformType));
         }
     }
 }
