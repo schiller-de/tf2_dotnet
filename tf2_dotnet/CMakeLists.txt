@@ -41,8 +41,9 @@ set(CS_SOURCES
   Exceptions.cs
   Interop.cs
   SafeBufferCoreHandle.cs
-  tf2_dotnet.cs
   Tf2ExceptionHelper.cs
+  Transform.cs
+  TransformBroadcaster.cs
   TransformBuffer.cs
   TransformListener.cs
 )
