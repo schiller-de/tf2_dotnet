@@ -88,6 +88,21 @@ tf2_dotnet_native_buffer_core_lookup_transform(
   Tf2DotnetExceptionType * exception_type,
   char * exception_message_buffer);
 
+TF2DOTNET_EXPORT
+Tf2DotnetTransformStamped
+TF2DOTNET_CDECL
+tf2_dotnet_native_buffer_core_lookup_transform_full(
+  tf2::BufferCore * buffer_core,
+  const char * target_frame,
+  int32_t target_sec,
+  uint32_t target_nanosec,
+  const char * source_frame,
+  int32_t source_sec,
+  uint32_t source_nanosec,
+  const char * fixed_frame,
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer);
+
 }
 
 #endif // TF2_DOTNET_H

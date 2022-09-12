@@ -125,6 +125,74 @@ namespace Ros2.Tf2DotNet
             return transformStamped;
         }
 
+        /// <summary>
+        /// Get the transform between two frames by frame ID assuming fixed frame.
+        /// </summary>
+        /// <param name="targetFrame">The frame to which data should be transformed.</param>
+        /// <param name="targetTime">The time to which the data should be transformed. (<c>null</c> will get the latest)</param>
+        /// <param name="sourceFrame">The frame where the data originated.</param>
+        /// <param name="sourceTime">The time at which the source_frame should be evaluated. (<c>null</c> will get the latest)</param>
+        /// <param name="fixedFrame">The frame in which to assume the transform is constant in time.</param>
+        /// <returns>The transform between the frames.</returns>
+        /// <exception cref="LookupException"></exception>
+        /// <exception cref="ConnectivityException"></exception>
+        /// <exception cref="ExtrapolationException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public TransformStamped LookupTransform(
+            string targetFrame,
+            Time targetTime,
+            string sourceFrame,
+            Time sourceTime,
+            string fixedFrame)
+        {
+            ThrowIfDisposed();
+
+            int targetSec;
+            uint targetNanosec;
+            if (targetTime != null)
+            {
+                targetSec = targetTime.Sec;
+                targetNanosec = targetTime.Nanosec;
+            }
+            else
+            {
+                targetSec = 0;
+                targetNanosec = 0;
+            }
+
+            int sourceSec;
+            uint sourceNanosec;
+            if (sourceTime != null)
+            {
+                sourceSec = sourceTime.Sec;
+                sourceNanosec = sourceTime.Nanosec;
+            }
+            else
+            {
+                sourceSec = 0;
+                sourceNanosec = 0;
+            }
+
+            Tf2ExceptionHelper.ResetMessage();
+
+            Transform transform = Interop.tf2_dotnet_native_buffer_core_lookup_transform_full(
+                _handle,
+                targetFrame,
+                targetSec,
+                targetNanosec,
+                sourceFrame,
+                sourceSec,
+                sourceNanosec,
+                fixedFrame,
+                out Tf2ExceptionType exceptionType,
+                Tf2ExceptionHelper.MessageBuffer);
+
+            Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
+
+            TransformStamped transformStamped = transform.ToTransformStamped(targetFrame, sourceFrame);
+            return transformStamped;
+        }
+
         private void ThrowIfDisposed()
         {
             if (_disposed)

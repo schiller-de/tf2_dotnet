@@ -180,4 +180,46 @@ tf2_dotnet_native_buffer_core_lookup_transform(
   }
 }
 
+Tf2DotnetTransformStamped
+tf2_dotnet_native_buffer_core_lookup_transform_full(
+  tf2::BufferCore * buffer_core,
+  const char * target_frame,
+  int32_t target_sec,
+  uint32_t target_nanosec,
+  const char * source_frame,
+  int32_t source_sec,
+  uint32_t source_nanosec,
+  const char * fixed_frame,
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer)
+{
+  try
+  {
+    Tf2DotnetTransformStamped result;
+
+    tf2::TimePoint target_time = tf2::TimePoint(std::chrono::seconds(target_sec) + std::chrono::nanoseconds(target_nanosec));
+    tf2::TimePoint source_time = tf2::TimePoint(std::chrono::seconds(source_sec) + std::chrono::nanoseconds(source_nanosec));
+
+    geometry_msgs::msg::TransformStamped transform =
+      buffer_core->lookupTransform(std::string(target_frame), target_time, std::string(source_frame), source_time, std::string(fixed_frame));
+
+    result.sec = transform.header.stamp.sec;
+    result.nanosec = transform.header.stamp.nanosec;
+    result.translation_x = transform.transform.translation.x;
+    result.translation_y = transform.transform.translation.y;
+    result.translation_z = transform.transform.translation.z;
+    result.rotation_x = transform.transform.rotation.x;
+    result.rotation_y = transform.transform.rotation.y;
+    result.rotation_z = transform.transform.rotation.z;
+    result.rotation_w = transform.transform.rotation.w;
+
+    return result;
+  }
+  catch (...)
+  {
+    tf2_dotnet_native_convert_exception(exception_type, exception_message_buffer);
+    return Tf2DotnetTransformStamped();
+  }
+}
+
 }
