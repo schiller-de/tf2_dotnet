@@ -36,7 +36,7 @@ enum Tf2DotnetExceptionType {
 #define TF2_DOTNET_EXCEPTION_MESSAGE_BUFFER_LENGTH 256
 
 void
-tf2_convert_exception(
+tf2_dotnet_native_convert_exception(
   Tf2DotnetExceptionType * exception_type,
   char * exception_message_buffer);
 

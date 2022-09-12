@@ -11,7 +11,10 @@
 
 extern "C" {
 
-void tf2_convert_exception(Tf2DotnetExceptionType * exception_type, char * exception_message_buffer)
+void
+tf2_dotnet_native_convert_exception(
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer)
 {
   // See https://stackoverflow.com/a/48036486, this is called a Lippincott function.
   try
@@ -73,7 +76,7 @@ tf2_dotnet_native_buffer_core_create(
   }
   catch (...)
   {
-    tf2_convert_exception(exception_type, exception_message_buffer);
+    tf2_dotnet_native_convert_exception(exception_type, exception_message_buffer);
     return nullptr;
   }
 }
@@ -90,7 +93,7 @@ tf2_dotnet_native_buffer_core_destroy(
   }
   catch (...)
   {
-    tf2_convert_exception(exception_type, exception_message_buffer);
+    tf2_dotnet_native_convert_exception(exception_type, exception_message_buffer);
   }
 }
 
@@ -134,7 +137,7 @@ tf2_dotnet_native_buffer_core_set_transform(
   }
   catch (...)
   {
-    tf2_convert_exception(exception_type, exception_message_buffer);
+    tf2_dotnet_native_convert_exception(exception_type, exception_message_buffer);
     return 0;
   }
 }
@@ -172,7 +175,7 @@ tf2_dotnet_native_buffer_core_lookup_transform(
   }
   catch (...)
   {
-    tf2_convert_exception(exception_type, exception_message_buffer);
+    tf2_dotnet_native_convert_exception(exception_type, exception_message_buffer);
     return Tf2DotnetTransformStamped();
   }
 }
