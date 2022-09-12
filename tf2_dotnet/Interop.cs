@@ -53,6 +53,18 @@ namespace Ros2.Tf2DotNet
 
         internal static Tf2DotNetNativeBufferCoreSetTransformType tf2_dotnet_native_buffer_core_set_transform = null;
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        internal delegate Transform Tf2DotNetNativeBufferCoreLookupTransformType(
+            SafeBufferCoreHandle bufferCore,
+            [MarshalAs(UnmanagedType.LPStr)] string targetFrame,
+            [MarshalAs(UnmanagedType.LPStr)] string sourceFrame,
+            int sec,
+            uint nanosec,
+            out Tf2ExceptionType exceptionType,
+            byte[] exceptionMessageBuffer);
+
+        internal static Tf2DotNetNativeBufferCoreLookupTransformType tf2_dotnet_native_buffer_core_lookup_transform = null;
+
         static Interop()
         {
             _dllLoadUtils = DllLoadUtilsFactory.GetDllLoadUtils();
@@ -66,6 +78,9 @@ namespace Ros2.Tf2DotNet
 
             IntPtr tf2_dotnet_native_buffer_core_set_transform_ptr = _dllLoadUtils.GetProcAddress(nativeLibrary, "tf2_dotnet_native_buffer_core_set_transform");
             tf2_dotnet_native_buffer_core_set_transform = (Tf2DotNetNativeBufferCoreSetTransformType)Marshal.GetDelegateForFunctionPointer(tf2_dotnet_native_buffer_core_set_transform_ptr, typeof(Tf2DotNetNativeBufferCoreSetTransformType));
+        
+            IntPtr tf2_dotnet_native_buffer_core_lookup_transform_ptr = _dllLoadUtils.GetProcAddress(nativeLibrary, "tf2_dotnet_native_buffer_core_lookup_transform");
+            tf2_dotnet_native_buffer_core_lookup_transform = (Tf2DotNetNativeBufferCoreLookupTransformType)Marshal.GetDelegateForFunctionPointer(tf2_dotnet_native_buffer_core_lookup_transform_ptr, typeof(Tf2DotNetNativeBufferCoreLookupTransformType));
         }
     }
 }

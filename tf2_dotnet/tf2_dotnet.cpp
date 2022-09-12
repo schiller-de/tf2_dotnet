@@ -151,6 +151,44 @@ tf2_dotnet_native_buffer_core_set_transform(
   }
 }
 
+Tf2DotnetTransformStamped
+tf2_dotnet_native_buffer_core_lookup_transform(
+  tf2::BufferCore * buffer_core,
+  const char * target_frame,
+  const char * source_frame,
+  int32_t sec,
+  uint32_t nanosec,
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer)
+{
+  try
+  {
+    Tf2DotnetTransformStamped result;
+
+    tf2::TimePoint time = tf2::TimePoint(std::chrono::seconds(sec) + std::chrono::nanoseconds(nanosec));
+
+    geometry_msgs::msg::TransformStamped transform =
+      buffer_core->lookupTransform(std::string(target_frame), std::string(source_frame), time);
+
+    result.sec = transform.header.stamp.sec;
+    result.nanosec = transform.header.stamp.nanosec;
+    result.translation_x = transform.transform.translation.x;
+    result.translation_y = transform.transform.translation.y;
+    result.translation_z = transform.transform.translation.z;
+    result.rotation_x = transform.transform.rotation.x;
+    result.rotation_y = transform.transform.rotation.y;
+    result.rotation_z = transform.transform.rotation.z;
+    result.rotation_w = transform.transform.rotation.w;
+
+    return result;
+  }
+  catch (...)
+  {
+    tf2_convert_exception(exception_type, exception_message_buffer);
+    return Tf2DotnetTransformStamped();
+  }
+}
+
 void native_tf2_add_transform(int32_t sec, uint32_t nanosec,
   const char * frame_id, const char * child_frame_id,
   double trans_x, double trans_y, double trans_z,

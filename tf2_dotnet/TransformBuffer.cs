@@ -14,6 +14,7 @@
  */
 
 using System;
+using builtin_interfaces.msg;
 using geometry_msgs.msg;
 
 namespace Ros2.Tf2DotNet
@@ -74,6 +75,54 @@ namespace Ros2.Tf2DotNet
             Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
             
             return result == 1;
+        }
+
+        /// <summary>
+        /// Get the transform between two frames by frame ID.
+        /// </summary>
+        /// <param name="targetFrame">The frame to which data should be transformed.</param>
+        /// <param name="sourceFrame">The frame where the data originated.</param>
+        /// <param name="time">The time at which the value of the transform is desired. (<c>null</c> will get the latest)</param>
+        /// <returns>The transform between the frames.</returns>
+        /// <exception cref="LookupException"></exception>
+        /// <exception cref="ConnectivityException"></exception>
+        /// <exception cref="ExtrapolationException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public TransformStamped LookupTransform(
+            string targetFrame,
+            string sourceFrame,
+            Time time = null)
+        {
+            ThrowIfDisposed();
+
+            int sec;
+            uint nanosec;
+            if (time != null)
+            {
+                sec = time.Sec;
+                nanosec = time.Nanosec;
+            }
+            else
+            {
+                sec = 0;
+                nanosec = 0;
+            }
+
+            Tf2ExceptionHelper.ResetMessage();
+
+            Transform transform = Interop.tf2_dotnet_native_buffer_core_lookup_transform(
+                _handle,
+                targetFrame,
+                sourceFrame,
+                sec,
+                nanosec,
+                out Tf2ExceptionType exceptionType,
+                Tf2ExceptionHelper.MessageBuffer);
+
+            Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
+
+            TransformStamped transformStamped = transform.ToTransformStamped(targetFrame, sourceFrame);
+            return transformStamped;
         }
 
         private void ThrowIfDisposed()
