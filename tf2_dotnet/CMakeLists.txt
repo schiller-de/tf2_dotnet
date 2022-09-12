@@ -44,6 +44,7 @@ set(CS_SOURCES
   tf2_dotnet.cs
   Tf2ExceptionHelper.cs
   TransformBuffer.cs
+  TransformListener.cs
 )
 
 find_package(rcldotnet_common REQUIRED)

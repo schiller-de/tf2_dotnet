@@ -35,9 +35,6 @@ enum Tf2DotnetExceptionType {
 // Mirror of TF2ExceptionHelper.MessageBufferLength in C#, keep in Sync!
 #define TF2_DOTNET_EXCEPTION_MESSAGE_BUFFER_LENGTH 256
 
-tf2_ros::TransformListener *tf2_transform_listener;
-tf2::BufferCore *tf2_buffer_core;
-
 void
 tf2_convert_exception(
   Tf2DotnetExceptionType * exception_type,
@@ -91,31 +88,6 @@ tf2_dotnet_native_buffer_core_lookup_transform(
   Tf2DotnetExceptionType * exception_type,
   char * exception_message_buffer);
 
-Tf2DotnetTransformStamped
-tf2_lookup_transform(
-    const char * target_frame, const char * source_frame,
-    const tf2::TimePoint& tp);
-
-TF2DOTNET_EXPORT
-void TF2DOTNET_CDECL native_tf2_init (
-  Tf2DotnetExceptionType * exception_type, char * exception_message_buffer);
-
-TF2DOTNET_EXPORT
-void TF2DOTNET_CDECL native_tf2_add_transform (int32_t sec, uint32_t nanosec,
-  const char * frame_id, const char * child_frame_id,
-  double trans_x, double trans_y, double trans_z,
-  double rot_x, double rot_y, double rot_z, double rot_w, int32_t is_static,
-  Tf2DotnetExceptionType * exception_type, char * exception_message_buffer);
-
-TF2DOTNET_EXPORT
-Tf2DotnetTransformStamped TF2DOTNET_CDECL native_tf2_lookup_transform (
-  const char * target_frame, const char * source_frame,
-  int32_t sec, uint32_t nanosec,
-  Tf2DotnetExceptionType * exception_type, char * exception_message_buffer);
-
-TF2DOTNET_EXPORT
-Tf2DotnetTransformStamped TF2DOTNET_CDECL native_tf2_lookup_last_transform (
-  const char * target_frame, const char * source_frame,
-  Tf2DotnetExceptionType * exception_type, char * exception_message_buffer);
 }
+
 #endif // TF2_DOTNET_H
