@@ -209,6 +209,50 @@ namespace Ros2.Tf2DotNet
         {
             ThrowIfDisposed();
 
+            var errorMessageBuffer = new byte[Tf2ExceptionHelper.MessageBufferLength];
+
+            bool result = CanTransformInner(
+                targetFrame,
+                sourceFrame,
+                time,
+                errorMessageBuffer);
+            
+            errorMessage = System.Text.Encoding.UTF8.GetString(errorMessageBuffer).TrimEnd('\0');
+
+            return result;
+        }
+
+        /// <summary>
+        /// Test if a transform is possible.
+        /// </summary>
+        /// <param name="targetFrame">The frame into which to transform.</param>
+        /// <param name="sourceFrame">The frame from which to transform.</param>
+        /// <param name="time">The time at which to transform.</param>
+        /// <returns>True if the transform is possible, false otherwise.</returns>
+        public bool CanTransform(
+            string targetFrame,
+            string sourceFrame,
+            Time time = null)
+        {
+            ThrowIfDisposed();
+
+            byte[] errorMessageBuffer = null;
+
+            bool result = CanTransformInner(
+                targetFrame,
+                sourceFrame,
+                time,
+                errorMessageBuffer);
+            
+            return result;
+        }
+
+        private bool CanTransformInner(
+            string targetFrame,
+            string sourceFrame,
+            Time time,
+            byte[] errorMessageBuffer)
+        {
             int sec;
             uint nanosec;
             if (time != null)
@@ -221,8 +265,6 @@ namespace Ros2.Tf2DotNet
                 sec = 0;
                 nanosec = 0;
             }
-
-            var errorMessageBuffer = new byte[Tf2ExceptionHelper.MessageBufferLength];
 
             Tf2ExceptionHelper.ResetMessage();
 
@@ -237,8 +279,6 @@ namespace Ros2.Tf2DotNet
                 Tf2ExceptionHelper.MessageBuffer);
 
             Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
-
-            errorMessage = System.Text.Encoding.UTF8.GetString(errorMessageBuffer).TrimEnd('\0');
 
             return result == 1;
         }
@@ -263,6 +303,61 @@ namespace Ros2.Tf2DotNet
         {
             ThrowIfDisposed();
 
+            var errorMessageBuffer = new byte[Tf2ExceptionHelper.MessageBufferLength];
+
+            bool result = CanTransformInner(
+                targetFrame,
+                targetTime,
+                sourceFrame,
+                sourceTime,
+                fixedFrame,
+                errorMessageBuffer);
+            
+            errorMessage = System.Text.Encoding.UTF8.GetString(errorMessageBuffer).TrimEnd('\0');
+
+            return result;
+        }
+
+        
+        /// <summary>
+        /// Test if a transform is possible.
+        /// </summary>
+        /// <param name="targetFrame">The frame into which to transform.</param>
+        /// <param name="targetTime">The time into which to transform.</param>
+        /// <param name="sourceFrame">The frame from which to transform.</param>
+        /// <param name="sourceTime">The time from which to transform.</param>
+        /// <param name="fixedFrame">The frame in which to treat the transform as constant in time.</param>
+        /// <returns>True if the transform is possible, false otherwise.</returns>
+        public bool CanTransform(
+            string targetFrame,
+            Time targetTime,
+            string sourceFrame,
+            Time sourceTime,
+            string fixedFrame)
+        {
+            ThrowIfDisposed();
+
+            byte[] errorMessageBuffer = null;
+
+            bool result = CanTransformInner(
+                targetFrame,
+                targetTime,
+                sourceFrame,
+                sourceTime,
+                fixedFrame,
+                errorMessageBuffer);
+
+            return result;
+        }
+        
+        private bool CanTransformInner(
+            string targetFrame,
+            Time targetTime,
+            string sourceFrame,
+            Time sourceTime,
+            string fixedFrame,
+            byte[] errorMessageBuffer)
+        {
             int targetSec;
             uint targetNanosec;
             if (targetTime != null)
@@ -289,8 +384,6 @@ namespace Ros2.Tf2DotNet
                 sourceNanosec = 0;
             }
             
-            var errorMessageBuffer = new byte[Tf2ExceptionHelper.MessageBufferLength];
-
             Tf2ExceptionHelper.ResetMessage();
 
             int result = Interop.tf2_dotnet_native_buffer_core_can_transform_full(
@@ -307,8 +400,6 @@ namespace Ros2.Tf2DotNet
                 Tf2ExceptionHelper.MessageBuffer);
 
             Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
-
-            errorMessage = System.Text.Encoding.UTF8.GetString(errorMessageBuffer).TrimEnd('\0');
 
             return result == 1;
         }
