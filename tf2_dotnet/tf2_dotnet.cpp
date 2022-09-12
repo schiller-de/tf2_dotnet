@@ -222,4 +222,72 @@ tf2_dotnet_native_buffer_core_lookup_transform_full(
   }
 }
 
+int32_t
+tf2_dotnet_native_buffer_core_can_transform(
+  tf2::BufferCore * buffer_core,
+  const char * target_frame,
+  const char * source_frame,
+  int32_t sec,
+  uint32_t nanosec,
+  char * error_message_buffer,
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer)
+{
+  try
+  {
+    tf2::TimePoint time = tf2::TimePoint(std::chrono::seconds(sec) + std::chrono::nanoseconds(nanosec));
+    std::string error_message;
+
+    bool result = buffer_core->canTransform(std::string(target_frame), std::string(source_frame), time, &error_message);
+
+    if (error_message_buffer != nullptr)
+    {
+      strncpy(error_message_buffer, error_message.c_str(), TF2_DOTNET_EXCEPTION_MESSAGE_BUFFER_LENGTH);
+    }
+    
+    return result;
+  }
+  catch (...)
+  {
+    tf2_dotnet_native_convert_exception(exception_type, exception_message_buffer);
+    return false;
+  }
+}
+
+int32_t
+tf2_dotnet_native_buffer_core_can_transform_full(
+  tf2::BufferCore * buffer_core,
+  const char * target_frame,
+  int32_t target_sec,
+  uint32_t target_nanosec,
+  const char * source_frame,
+  int32_t source_sec,
+  uint32_t source_nanosec,
+  const char * fixed_frame,
+  char * error_message_buffer,
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer)
+{
+  try
+  {
+    tf2::TimePoint target_time = tf2::TimePoint(std::chrono::seconds(target_sec) + std::chrono::nanoseconds(target_nanosec));
+    tf2::TimePoint source_time = tf2::TimePoint(std::chrono::seconds(source_sec) + std::chrono::nanoseconds(source_nanosec));
+    std::string error_message;
+
+    bool result = buffer_core->canTransform(std::string(target_frame), target_time, std::string(source_frame), source_time, std::string(fixed_frame), &error_message);
+
+    if (error_message_buffer != nullptr)
+    {
+      strncpy(error_message_buffer, error_message.c_str(), TF2_DOTNET_EXCEPTION_MESSAGE_BUFFER_LENGTH);
+    }
+
+    return result;
+  }
+  catch (...)
+  {
+    tf2_dotnet_native_convert_exception(exception_type, exception_message_buffer);
+    return false;
+  }
+}
+
 }

@@ -103,6 +103,35 @@ tf2_dotnet_native_buffer_core_lookup_transform_full(
   Tf2DotnetExceptionType * exception_type,
   char * exception_message_buffer);
 
+TF2DOTNET_EXPORT
+int32_t
+TF2DOTNET_CDECL
+tf2_dotnet_native_buffer_core_can_transform(
+  tf2::BufferCore * buffer_core,
+  const char * target_frame,
+  const char * source_frame,
+  int32_t sec,
+  uint32_t nanosec,
+  char * error_message_buffer,
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer);
+
+TF2DOTNET_EXPORT
+int32_t
+TF2DOTNET_CDECL
+tf2_dotnet_native_buffer_core_can_transform_full(
+  tf2::BufferCore * buffer_core,
+  const char * target_frame,
+  int32_t target_sec,
+  uint32_t target_nanosec,
+  const char * source_frame,
+  int32_t source_sec,
+  uint32_t source_nanosec,
+  const char * fixed_frame,
+  char * error_message_buffer,
+  Tf2DotnetExceptionType * exception_type,
+  char * exception_message_buffer);
+
 }
 
 #endif // TF2_DOTNET_H

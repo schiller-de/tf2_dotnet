@@ -80,6 +80,34 @@ namespace Ros2.Tf2DotNet
         
         internal static Tf2DotNetNativeBufferCoreLookupTransformFullType tf2_dotnet_native_buffer_core_lookup_transform_full = null;
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        internal delegate int Tf2DotNetNativeBufferCoreCanTransformType(
+            SafeBufferCoreHandle bufferCore,
+            [MarshalAs(UnmanagedType.LPStr)] string targetFrame,
+            [MarshalAs(UnmanagedType.LPStr)] string sourceFrame,
+            int sec,
+            uint nanosec,
+            byte[] errorMessageBuffer,
+            out Tf2ExceptionType exceptionType,
+            byte[] exceptionMessageBuffer);
+
+        internal static Tf2DotNetNativeBufferCoreCanTransformType tf2_dotnet_native_buffer_core_can_transform = null;
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        internal delegate int Tf2DotNetNativeBufferCoreCanTransformFullType(
+            SafeBufferCoreHandle bufferCore,
+            [MarshalAs(UnmanagedType.LPStr)] string targetFrame,
+            int targetSec,
+            uint targetNanosec,
+            [MarshalAs(UnmanagedType.LPStr)] string sourceFrame,
+            int sourceSec,
+            uint sourceNanosec,
+            [MarshalAs(UnmanagedType.LPStr)] string fixedFrame,
+            byte[] errorMessageBuffer,
+            out Tf2ExceptionType exceptionType,
+            byte[] exceptionMessageBuffer);
+        internal static Tf2DotNetNativeBufferCoreCanTransformFullType tf2_dotnet_native_buffer_core_can_transform_full = null;
+
         static Interop()
         {
             _dllLoadUtils = DllLoadUtilsFactory.GetDllLoadUtils();
@@ -99,6 +127,12 @@ namespace Ros2.Tf2DotNet
 
             IntPtr tf2_dotnet_native_buffer_core_lookup_transform_full_ptr = _dllLoadUtils.GetProcAddress(nativeLibrary, "tf2_dotnet_native_buffer_core_lookup_transform_full");
             tf2_dotnet_native_buffer_core_lookup_transform_full = (Tf2DotNetNativeBufferCoreLookupTransformFullType)Marshal.GetDelegateForFunctionPointer(tf2_dotnet_native_buffer_core_lookup_transform_full_ptr, typeof(Tf2DotNetNativeBufferCoreLookupTransformFullType));
+        
+            IntPtr tf2_dotnet_native_buffer_core_can_transform_ptr = _dllLoadUtils.GetProcAddress(nativeLibrary, "tf2_dotnet_native_buffer_core_can_transform");
+            tf2_dotnet_native_buffer_core_can_transform = (Tf2DotNetNativeBufferCoreCanTransformType)Marshal.GetDelegateForFunctionPointer(tf2_dotnet_native_buffer_core_can_transform_ptr, typeof(Tf2DotNetNativeBufferCoreCanTransformType));
+
+            IntPtr tf2_dotnet_native_buffer_core_can_transform_full_ptr = _dllLoadUtils.GetProcAddress(nativeLibrary, "tf2_dotnet_native_buffer_core_can_transform_full");
+            tf2_dotnet_native_buffer_core_can_transform_full = (Tf2DotNetNativeBufferCoreCanTransformFullType)Marshal.GetDelegateForFunctionPointer(tf2_dotnet_native_buffer_core_can_transform_full_ptr, typeof(Tf2DotNetNativeBufferCoreCanTransformFullType));
         }
     }
 }

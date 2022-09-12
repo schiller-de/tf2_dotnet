@@ -193,6 +193,126 @@ namespace Ros2.Tf2DotNet
             return transformStamped;
         }
 
+        /// <summary>
+        /// Test if a transform is possible.
+        /// </summary>
+        /// <param name="targetFrame">The frame into which to transform.</param>
+        /// <param name="sourceFrame">The frame from which to transform.</param>
+        /// <param name="time">The time at which to transform.</param>
+        /// <param name="errorMessage">The error message why the transform failed.</param>
+        /// <returns>True if the transform is possible, false otherwise.</returns>
+        public bool CanTransform(
+            string targetFrame,
+            string sourceFrame,
+            Time time,
+            out string errorMessage)
+        {
+            ThrowIfDisposed();
+
+            int sec;
+            uint nanosec;
+            if (time != null)
+            {
+                sec = time.Sec;
+                nanosec = time.Nanosec;
+            }
+            else
+            {
+                sec = 0;
+                nanosec = 0;
+            }
+
+            var errorMessageBuffer = new byte[Tf2ExceptionHelper.MessageBufferLength];
+
+            Tf2ExceptionHelper.ResetMessage();
+
+            int result = Interop.tf2_dotnet_native_buffer_core_can_transform(
+                _handle,
+                targetFrame,
+                sourceFrame,
+                sec,
+                nanosec,
+                errorMessageBuffer,
+                out Tf2ExceptionType exceptionType,
+                Tf2ExceptionHelper.MessageBuffer);
+
+            Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
+
+            errorMessage = System.Text.Encoding.UTF8.GetString(errorMessageBuffer).TrimEnd('\0');
+
+            return result == 1;
+        }
+
+        /// <summary>
+        /// Test if a transform is possible.
+        /// </summary>
+        /// <param name="targetFrame">The frame into which to transform.</param>
+        /// <param name="targetTime">The time into which to transform.</param>
+        /// <param name="sourceFrame">The frame from which to transform.</param>
+        /// <param name="sourceTime">The time from which to transform.</param>
+        /// <param name="fixedFrame">The frame in which to treat the transform as constant in time.</param>
+        /// <param name="errorMessage">The error message why the transform failed.</param>
+        /// <returns>True if the transform is possible, false otherwise.</returns>
+        public bool CanTransform(
+            string targetFrame,
+            Time targetTime,
+            string sourceFrame,
+            Time sourceTime,
+            string fixedFrame,
+            out string errorMessage)
+        {
+            ThrowIfDisposed();
+
+            int targetSec;
+            uint targetNanosec;
+            if (targetTime != null)
+            {
+                targetSec = targetTime.Sec;
+                targetNanosec = targetTime.Nanosec;
+            }
+            else
+            {
+                targetSec = 0;
+                targetNanosec = 0;
+            }
+
+            int sourceSec;
+            uint sourceNanosec;
+            if (sourceTime != null)
+            {
+                sourceSec = sourceTime.Sec;
+                sourceNanosec = sourceTime.Nanosec;
+            }
+            else
+            {
+                sourceSec = 0;
+                sourceNanosec = 0;
+            }
+            
+            var errorMessageBuffer = new byte[Tf2ExceptionHelper.MessageBufferLength];
+
+            Tf2ExceptionHelper.ResetMessage();
+
+            int result = Interop.tf2_dotnet_native_buffer_core_can_transform_full(
+                _handle,
+                targetFrame,
+                targetSec,
+                targetNanosec,
+                sourceFrame,
+                sourceSec,
+                sourceNanosec,
+                fixedFrame,
+                errorMessageBuffer,
+                out Tf2ExceptionType exceptionType,
+                Tf2ExceptionHelper.MessageBuffer);
+
+            Tf2ExceptionHelper.ThrowIfHasException(exceptionType);
+
+            errorMessage = System.Text.Encoding.UTF8.GetString(errorMessageBuffer).TrimEnd('\0');
+
+            return result == 1;
+        }
+
         private void ThrowIfDisposed()
         {
             if (_disposed)
