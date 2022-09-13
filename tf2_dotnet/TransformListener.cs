@@ -37,6 +37,9 @@ namespace Ros2.Tf2DotNet
                 SubscriptionCallback(message, isStatic: false);
             });
 
+            // TODO: The QoS settings need to be applied for this to work
+            // correctly: Otherwise if the node started after the static topics
+            // are published they are not received here...
             _tfStaticSubscription = node.CreateSubscription<TFMessage>("/tf_static", (TFMessage message) =>
             {
                 SubscriptionCallback(message, isStatic: true);
