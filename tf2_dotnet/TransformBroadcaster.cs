@@ -22,9 +22,25 @@ namespace Ros2.Tf2DotNet
     {
         private readonly Publisher<tf2_msgs.msg.TFMessage> tfPublisher;
 
-        public TransformBroadcaster(Node node)
+        /// <summary>
+        /// The TF2 dynamic broadcaster qos profile.
+        /// </summary>
+        public static QosProfile DynamicBroadcasterQosProfile { get; } = QosProfile.KeepLast(100);
+
+        
+        /// <summary>
+        /// The TF2 static broadcaster qos profile.
+        /// </summary>
+        public static QosProfile StaticBroadcasterQosProfile { get; } = QosProfile.KeepLast(1).WithTransientLocal();
+
+        public TransformBroadcaster(Node node, QosProfile qosProfile = null)
         {
-            tfPublisher = node.CreatePublisher<tf2_msgs.msg.TFMessage> ("/tf");
+            if (qosProfile == null)
+            {
+                qosProfile = DynamicBroadcasterQosProfile;
+            }
+
+            tfPublisher = node.CreatePublisher<tf2_msgs.msg.TFMessage>("/tf", qosProfile);
         }
 
         public void SendTransform(geometry_msgs.msg.TransformStamped transform)
