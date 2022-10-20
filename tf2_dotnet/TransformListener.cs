@@ -28,6 +28,16 @@ namespace Ros2.Tf2DotNet
         private readonly Subscription<TFMessage> _tfSubscription;
         private readonly Subscription<TFMessage> _tfStaticSubscription;
 
+        /// <summary>
+        /// The TF2 dynamic listener qos profile.
+        /// </summary>
+        public static QosProfile DynamicListenerQosProfile { get; } = QosProfile.KeepLast(100);
+
+        /// <summary>
+        /// The TF2 static listener qos profile.
+        /// </summary>
+        public static QosProfile StaticListenerQosProfile { get; } = QosProfile.KeepLast(100).WithTransientLocal();
+
         public TransformListener(TransformBuffer buffer, Node node)
         {
             _buffer = buffer;
@@ -35,15 +45,12 @@ namespace Ros2.Tf2DotNet
             _tfSubscription = node.CreateSubscription<TFMessage>("/tf", (TFMessage message) =>
             {
                 SubscriptionCallback(message, isStatic: false);
-            });
+            }, DynamicListenerQosProfile);
 
-            // TODO: The QoS settings need to be applied for this to work
-            // correctly: Otherwise if the node started after the static topics
-            // are published they are not received here...
             _tfStaticSubscription = node.CreateSubscription<TFMessage>("/tf_static", (TFMessage message) =>
             {
                 SubscriptionCallback(message, isStatic: true);
-            });
+            }, StaticListenerQosProfile);
 
             // Suppress field not used exceptions.
             _ = _tfSubscription;
